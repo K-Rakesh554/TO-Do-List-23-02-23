@@ -3,20 +3,32 @@ import { useState, ChangeEvent } from 'react';
 import './style.css';
 import { Itask } from './interface';
 import TodoList from './components/todolist';
+
 export default function App() {
   let [task, setTask] = useState<string>('');
   let [deadline, setdeadline] = useState<number>(0);
   let [todolist, setToDoList] = useState<Itask[]>([]);
 
   const displaydate = new Date();
+
+
+  const checked = false;
+
   // handler to set data
   const handledatadisplay = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === 'task') setTask(event.target.value);
     else setdeadline(Number(event.target.value));
   };
+
   //handler to push data
   const handledatapush = (): void => {
-    const newtask = { taskname: task, daystocomplete: deadline };
+    
+    const newtask = {
+      taskname: task,
+      daystocomplete: deadline,
+      ID: genID,
+      isComplete: checked,
+    };
     setToDoList([...todolist, newtask]);
     console.log(todolist);
     setTask('');
@@ -46,6 +58,7 @@ export default function App() {
           name="task"
           placeholder="input task...."
           onChange={handledatadisplay}
+          required
         />
         <label> BALL-PARK YOUR GOAL:</label>
         <input
@@ -54,6 +67,7 @@ export default function App() {
           name="deadline"
           placeholder="deadline in days"
           onChange={handledatadisplay}
+          required
         />
         <button onClick={handledatapush} id="addtaskbutton">
           add task
@@ -61,7 +75,7 @@ export default function App() {
       </div>
 
       <div className="outputarea">
-        <table id="task">
+        <table id="task ">
           <thead id="tablehead">
             <tr>
               <th>task</th>
@@ -69,9 +83,11 @@ export default function App() {
               <th> edit or delete</th>
             </tr>
           </thead>
-          {todolist.map((task: Itask, key = number) => {
+          {todolist.map((task: Itask,) => {
             return (
-              <TodoList task={task} key={key} tasktodelete={handledelete} />
+              <div key={ID}>
+                <TodoList task={task} key={} tasktodelete={handledelete} />
+              </div>
             );
           })}
         </table>

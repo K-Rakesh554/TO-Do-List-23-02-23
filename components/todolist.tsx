@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 import { Itask } from '../interface';
 import './style2.css';
 interface Props {
@@ -7,26 +7,31 @@ interface Props {
 }
 export default function TodoList({ task, tasktodelete }: Props) {
   return (
-    <div className="todo">
-    
-        <tbody>
-          <tr>
-            <td>{task.taskname}</td>
-            <td>{task.daystocomplete} days left</td>
-            <td>
+    <div>
+     
+      <tbody id="todo">
+        <tr>
+          <input type="checkbox" />
+
+          <td>{task.taskname}</td>
+          <td>{task.daystocomplete} days left</td>
+          <td>{task.id}</td>
+          <td>
+            <button>edit task</button>
+          </td>
+          <td>
+            {' '}
+            <button
+              onClick={() => {
+                tasktodelete(task.taskname);
+              }}
+            >
               {' '}
-              <button
-                onClick={() => {
-                  tasktodelete(task.taskname);
-                }}
-              >
-                {' '}
-                delete task
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      
+              delete task
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </div>
   );
 }
