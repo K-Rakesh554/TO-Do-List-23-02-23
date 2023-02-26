@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useRef } from 'react';
 import './style.css';
 import { Itask } from './interface';
 import TodoList from './components/todolist';
@@ -9,8 +9,9 @@ export default function App() {
   let [deadline, setdeadline] = useState<number>(0);
   let [todolist, setToDoList] = useState<Itask[]>([]);
 
-  const displaydate = new Date();
+  const Identity = useRef(null);
 
+  const displaydate = new Date();
 
   const checked = false;
 
@@ -22,7 +23,7 @@ export default function App() {
 
   //handler to push data
   const handledatapush = (): void => {
-    
+    const genID = Date.now();
     const newtask = {
       taskname: task,
       daystocomplete: deadline,
@@ -36,12 +37,22 @@ export default function App() {
   };
 
   // handler to delete data
-  const handledelete = (tasknametodelete: string): void => {
+  const handledelete = (tasknametodelete: number): void => {
     setToDoList(
       todolist.filter((task) => {
-        return task.taskname !== tasknametodelete;
+        return task.ID !== tasknametodelete;
       })
     );
+  };
+
+  // handle edit data
+  const handleEdit = (taskidtoedit: number): void => {
+    Identity.current = taskidtoedit;
+
+    todolist.map((clickedForEdit) => {
+      setTask(clickedForEdit.taskname);
+      setdeadline(clickedForEdit.daystocomplete);
+    });
   };
 
   return (
@@ -78,18 +89,24 @@ export default function App() {
         <table id="task ">
           <thead id="tablehead">
             <tr>
+              <th>check if complete</th>
               <th>task</th>
               <th>days to complete</th>
               <th> edit or delete</th>
             </tr>
           </thead>
-          {todolist.map((task: Itask,) => {
-            return (
-              <div key={ID}>
-                <TodoList task={task} key={} tasktodelete={handledelete} />
-              </div>
-            );
-          })}
+          <tbody id="todo">
+            {todolist.map((task: Itask, id) => {
+              return (
+                <TodoList
+                  task={task}
+                  key={id}
+                  tasktodelete={handledelete}
+                  tasktoedit={handleEdit}
+                />
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </div>

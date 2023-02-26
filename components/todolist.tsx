@@ -1,37 +1,38 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent, useRef } from 'react';
 import { Itask } from '../interface';
 import './style2.css';
 interface Props {
   task: Itask;
-  tasktodelete(taskname: string): void;
+  tasktodelete(taskID: number): void;
+  tasktoedit(taskID: number): void;
 }
-export default function TodoList({ task, tasktodelete }: Props) {
+export default function TodoList({ task, tasktodelete, tasktoedit }: Props) {
   return (
-    <div>
-     
-      <tbody id="todo">
-        <tr>
-          <input type="checkbox" />
+    <tr>
+      <td>
+        {' '}
+        <input type="checkbox" />
+      </td>
+      <td>{task.taskname}</td>
+      <td>{task.daystocomplete} days left</td>
 
-          <td>{task.taskname}</td>
-          <td>{task.daystocomplete} days left</td>
-          <td>{task.id}</td>
-          <td>
-            <button>edit task</button>
-          </td>
-          <td>
-            {' '}
-            <button
-              onClick={() => {
-                tasktodelete(task.taskname);
-              }}
-            >
-              {' '}
-              delete task
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </div>
+      <td>
+        <button
+          onClick={() => {
+            tasktoedit(task.ID);
+          }}
+        >
+          edit task
+        </button>
+
+        <button
+          onClick={() => {
+            tasktodelete(task.ID);
+          }}
+        >
+          delete task
+        </button>
+      </td>
+    </tr>
   );
 }
