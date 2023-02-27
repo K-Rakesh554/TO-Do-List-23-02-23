@@ -6,32 +6,24 @@ interface Props {
   tasktodelete(taskID: number): void;
   tasktoedit(taskID: number): void;
 }
+
 export default function TodoList({ task, tasktodelete, tasktoedit }: Props) {
+  const buttonedit = (): void => {
+    tasktoedit(task.ID);
+  };
+  const buttondelete = (): void => {
+    tasktodelete(task.ID);
+  };
+
   return (
     <tr>
-      <td>
-        {' '}
-        <input type="checkbox" />
-      </td>
-      <td>{task.taskname}</td>
+      <td> {task.taskname}</td>
       <td>{task.daystocomplete} days left</td>
 
       <td>
-        <button
-          onClick={() => {
-            tasktoedit(task.ID);
-          }}
-        >
-          edit task
-        </button>
+        <button onClick={buttonedit}>edit task</button>
 
-        <button
-          onClick={() => {
-            tasktodelete(task.ID);
-          }}
-        >
-          delete task
-        </button>
+        <button onClick={buttondelete}>delete task</button>
       </td>
     </tr>
   );

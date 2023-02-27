@@ -23,17 +23,29 @@ export default function App() {
 
   //handler to push data
   const handledatapush = (): void => {
-    const genID = Date.now();
-    const newtask = {
-      taskname: task,
-      daystocomplete: deadline,
-      ID: genID,
-      isComplete: checked,
-    };
-    setToDoList([...todolist, newtask]);
-    console.log(todolist);
-    setTask('');
-    setdeadline(0);
+    if (task == '' && deadline == 0) {
+      alert('please enter data');
+    } else {
+      todolist.map((datafromarray) => {
+        if (datafromarray.ID === Identity.current) {
+          setToDoList([...todolist]);
+        }
+      });
+      const genID = Date.now();
+      const newtask = {
+        taskname: task,
+        daystocomplete: deadline,
+        ID: genID,
+        isComplete: checked,
+      };
+
+      setToDoList([...todolist, newtask]);
+      console.log(todolist);
+      setTask('');
+      setdeadline(0);
+
+      Identity.current = null;
+    }
   };
 
   // handler to delete data
@@ -50,8 +62,15 @@ export default function App() {
     Identity.current = taskidtoedit;
 
     todolist.map((clickedForEdit) => {
-      setTask(clickedForEdit.taskname);
-      setdeadline(clickedForEdit.daystocomplete);
+      if (Identity.current === clickedForEdit.ID) {
+        setTask(clickedForEdit.taskname);
+        setdeadline(clickedForEdit.daystocomplete);
+
+        if (Identity.current) {
+        }
+      } else {
+        [...todolist];
+      }
     });
   };
 
@@ -80,8 +99,10 @@ export default function App() {
           onChange={handledatadisplay}
           required
         />
+
         <button onClick={handledatapush} id="addtaskbutton">
-          add task
+          {' '}
+          {Identity.current ? 'save task' : 'add the task'}
         </button>
       </div>
 
@@ -89,7 +110,6 @@ export default function App() {
         <table id="task ">
           <thead id="tablehead">
             <tr>
-              <th>check if complete</th>
               <th>task</th>
               <th>days to complete</th>
               <th> edit or delete</th>
